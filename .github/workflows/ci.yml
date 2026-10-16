@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build Custom UI + playground
+        run: npm run build
+      - name: Validate manifest (Atlassian @forge/manifest)
+        run: npm run lint:manifest
+      - name: Bundle backend with Forge's webpack config
+        run: npm run check:bundle
+      - name: Unit, integration and UI tests
+        run: npm run test:coverage
+      - name: Upload playground preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: playground
+          path: dist/playground
+          retention-days: 14

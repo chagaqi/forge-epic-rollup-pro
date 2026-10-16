@@ -1,0 +1,51 @@
+# Epic Rollup Pro: Forge manifest.
+#
+# Zero-egress "Runs on Atlassian" architecture:
+#   * No `remotes`, no `permissions.external` (no outbound fetch), no Connect.
+#   * All data stays in Jira (read via the user's own permissions) and Forge KVS.
+#   * Exactly two scopes: read:jira-work (issues, fields, worklogs, projects,
+#     my-permissions) and storage:app (hourly rates, budgets, field cache).
+modules:
+  jira:issuePanel:
+    - key: epic-rollup-issue-panel
+      resource: rollup-ui
+      resolver:
+        function: resolver
+      title: Epic Rollup Pro
+      icon: resource:rollup-ui;icon.svg
+      viewportSize: large
+  jira:projectPage:
+    - key: epic-rollup-project-page
+      resource: rollup-ui
+      resolver:
+        function: resolver
+      title: Epic Rollup Pro
+      icon: resource:rollup-ui;icon.svg
+  scheduledTrigger:
+    # GDPR: report stored account ids weekly and erase closed accounts.
+    - key: personal-data-report
+      function: privacy-report
+      interval: week
+  function:
+    - key: resolver
+      handler: index.handler
+      timeoutSeconds: 55
+    - key: privacy-report
+      handler: index.reportPersonalData
+resources:
+  - key: rollup-ui
+    path: static/rollup-ui/build
+    tunnel:
+      port: 3000
+app:
+  id: ari:cloud:ecosystem::app/00000000-0000-0000-0000-000000000000
+  runtime:
+    name: nodejs22.x
+    architecture: arm64
+    memoryMB: 512
+  licensing:
+    enabled: true
+permissions:
+  scopes:
+    - read:jira-work
+    - storage:app

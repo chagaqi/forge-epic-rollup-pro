@@ -1,0 +1,7 @@
+.pg-bar { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 8px 16px; background: var(--c-surface-sunken); border-bottom: 1px solid var(--c-border); font-size: 12px; }
+.pg-title { font-size: 13px; margin-right: 8px; }
+.pg-bar label { display: inline-flex; gap: 6px; align-items: center; }
+.pg-bar button { border: 1px solid var(--c-border); background: var(--c-surface); border-radius: 4px; padding: 3px 8px; cursor: pointer; }
+.pg-frame { padding: 16px; margin: 0 auto; }
+.pg-issuePanel { max-width: 920px; }
+.pg-projectPage { max-width: 1280px; }
