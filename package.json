@@ -1,0 +1,51 @@
+{
+  "name": "forge-epic-rollup-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Epic Rollup Pro: Epic -> child -> subtask rollups (time, story points, status, cost, dependency risk) with CSV / executive summary export for Jira Cloud. Runs on Atlassian (Forge, zero egress).",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@forge/api": "^8.3.0",
+    "@forge/kvs": "^2.1.0",
+    "@forge/resolver": "^2.0.1"
+  },
+  "devDependencies": {
+    "@forge/bridge": "^7.2.0",
+    "@forge/bundler": "^7.3.0",
+    "@forge/manifest": "^13.7.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "@vitest/coverage-v8": "^5.0.5",
+    "jsdom": "^30.1.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5",
+    "webpack": "^5.109.2",
+    "yaml": "^2.9.1"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "build:ui": "vite build --config static/rollup-ui/vite.config.mts",
+    "build:playground": "vite build --config static/rollup-ui/vite.config.mts --mode playground",
+    "build": "npm run build:ui && npm run build:playground",
+    "playground": "vite --config static/rollup-ui/vite.config.mts --open /playground/",
+    "playground:preview": "npm run build:playground && vite preview --config static/rollup-ui/vite.config.mts --mode playground --open /playground/",
+    "dev:ui": "vite --config static/rollup-ui/vite.config.mts",
+    "lint:manifest": "node scripts/validate-manifest.mjs",
+    "verify": "npm run typecheck && npm run build && npm run lint:manifest && npm run check:bundle && npm test",
+    "deploy": "npm run build:ui && forge deploy",
+    "check:bundle": "node scripts/check-forge-bundle.cjs"
+  }
+}

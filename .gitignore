@@ -1,0 +1,10 @@
+node_modules/
+static/rollup-ui/build/
+dist/
+coverage/
+.forge/
+*.log
+.DS_Store
+.env
+scratch_*
+.tsbuild/
